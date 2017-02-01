@@ -1,4 +1,5 @@
 ﻿using GoogleHashCode02_2017.Entities;
+using GoogleHashCode02_2017.Extensions;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,24 +25,37 @@ namespace GoogleHashCode02_2017
             for (int i = 1; i <= Data.NbCars; i++)
             {
                 Journey journey = new Journey();
-                journey.CarId = 0;
+                journey.CarId = i;
                 int elapsedSeconds = 0;
 
                 Junction startJunction = Data.Junctions.Single(j => j.Id == Data.StartJunctionId);
                 startJunction.WasVisited = true;
                 journey.Steps.Add(startJunction);
+                journey.TotalSeconds = 0;
 
                 Junction currentJunction = startJunction;
                 while (elapsedSeconds < Data.NbSecondsMax)
                 {
                     Street nextStreet = GetNextStreet(currentJunction, elapsedSeconds);
 
+                    // On a trouvé aucune rue
+                    if (nextStreet == null)
+                        break;
+
+                    // On n'a pas le temps d'aller à la prochaine rue
+                    // TODO : la rue la plus optimale est trop loin mais une autre est peut etre accessible ?
+                    if ((elapsedSeconds + nextStreet.CrossingTime) > Data.NbSecondsMax)
+                        break;
+
                     journey.Steps.Add(nextStreet.ArrivalJunction);
+                    journey.TotalSeconds += nextStreet.CrossingTime;
                     nextStreet.WasVisited = true;
                     nextStreet.ArrivalJunction.WasVisited = true;
                     currentJunction = nextStreet.ArrivalJunction;
-                    elapsedSeconds += nextStreet.Time;
+                    elapsedSeconds += nextStreet.CrossingTime;
                 }
+
+                Journeys.Add(journey);
             }
             
             return Journeys;
@@ -49,39 +63,57 @@ namespace GoogleHashCode02_2017
 
         private Street GetNextStreet(Junction currentJunction, int elapsedSeconds)
         {
-            var notVisitedStreets = currentJunction.BeginningStreets.Where(_ => !_.WasVisited);
+            Queue<QueueElement> fifo = new Queue<QueueElement>();
+            fifo.Enqueue(new QueueElement {
+                ElapsedSeconds = elapsedSeconds,
+                Position = currentJunction,
+                StreetSteps = new List<Street>()
+            });
 
-            Street nextStreet;
-            if (notVisitedStreets.Count() > 0)
+            HashSet<int> alreadySeenJunctionId = new HashSet<int>();
+            alreadySeenJunctionId.Add(currentJunction.Id);
+
+            while(fifo.Count() > 0)
             {
-                // il existe un chemin non visité
-                nextStreet = notVisitedStreets.MaxBy(_ => _.Ponderation);
-            }
-            else
-            {
-                // tous les chemins ont déjà été visités
-                nextStreet = GetNextStreet(currentJunction, elapsedSeconds, Data.NbSecondsMax);
+                var qElement = fifo.Dequeue();
+
+                var notVisitedStreets = GetNotVisitedStreets(qElement.Position);
+
+                if (notVisitedStreets.Count() > 0)
+                {
+                    var street = GetBestPonderationStreet(notVisitedStreets);
+                    qElement.StreetSteps.Add(street);
+                    return qElement.StreetSteps.First();
+                }
+                else
+                {
+                    foreach(var street in qElement.Position.BeginningStreets)
+                    {
+                        if (!alreadySeenJunctionId.Contains(street.ArrivalJunction.Id))
+                        {
+                            fifo.Enqueue(new QueueElement
+                            {
+                                ElapsedSeconds = elapsedSeconds + street.CrossingTime,
+                                Position = street.ArrivalJunction,
+                                StreetSteps = qElement.StreetSteps.CloneAndAdd(street)
+                            });
+                            alreadySeenJunctionId.Add(street.ArrivalJunction.Id);
+                        }
+                    }
+                }
             }
 
-            return nextStreet;
+            return null; // on n'a rien trouvé !
         }
 
-        private static Street GetNextStreet(Junction position, int secondeEcoule, int nbSecondsMax)
+        private Street GetBestPonderationStreet(List<Street> notVisitedStreets)
         {
-            var streetNonVisite = position.BeginningStreets.Where(s => !s.WasVisited
-                && (secondeEcoule + s.Time) <= nbSecondsMax);
-            ; ; ; ; ; ;
-            if (streetNonVisite.Count() > 0)
-                return streetNonVisite.MaxBy(_ => _.Ponderation);
-
-
-            foreach (var s in position.BeginningStreets)
-            {
-                return GetNextStreet(s.ArrivalJunction, secondeEcoule + s.Time, nbSecondsMax);
-            }
-
-            return null;
+            return notVisitedStreets.MaxBy(_ => _.Ponderation);
         }
 
+        private List<Street> GetNotVisitedStreets(Junction junction)
+        {
+            return junction.BeginningStreets.Where(_ => !_.WasVisited).ToList();
+        }
     }
 }

@@ -6,11 +6,11 @@
         public Junction ArrivalJunction { get; set; }
 
         public int Direction { get; set; }
-        public int Time { get; set; }
+        public int CrossingTime { get; set; }
         public int Distance { get; set; }
 
         public double Ponderation
-            => Distance / Time;
+            => Distance / CrossingTime;
 
         public bool WasVisited { get; set; } = false;
     }

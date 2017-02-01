@@ -52,7 +52,9 @@
     <Compile Include="Entities\Street.cs" />
     <Compile Include="Entities\Journey.cs" />
     <Compile Include="EntryFileParser.cs" />
+    <Compile Include="Extensions\List.cs" />
     <Compile Include="JourneyPlanner.cs" />
+    <Compile Include="QueueElement.cs" />
     <Compile Include="Tools\Parsing\FileCreator.cs" />
     <Compile Include="Tools\Parsing\Parser.cs" />
     <Compile Include="Program.cs" />
@@ -62,6 +64,10 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntryFiles\paris_54000.txt" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

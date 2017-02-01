@@ -70,7 +70,7 @@ namespace GoogleHashCode02_2017
                 street.StartJunction = startJunction;
                 street.ArrivalJunction = arrivalJunction;
                 street.Direction = int.Parse(tabStreetLine[2]);
-                street.Time = int.Parse(tabStreetLine[3]);
+                street.CrossingTime = int.Parse(tabStreetLine[3]);
                 street.Distance = int.Parse(tabStreetLine[4]);
                 Data.Streets.Add(street);
 
