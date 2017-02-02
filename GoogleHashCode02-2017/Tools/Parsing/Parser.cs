@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace GoogleHashCode02_2017.Tools.Parsing
+namespace Tools.Parsing
 {
     public class Parser : IDisposable
     {

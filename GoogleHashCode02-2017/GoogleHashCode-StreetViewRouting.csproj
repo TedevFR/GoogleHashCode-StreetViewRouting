@@ -7,7 +7,7 @@
     <ProjectGuid>{27C786C9-2140-44C1-9871-D3FC7BCFE760}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GoogleHashCode02_2017</RootNamespace>
+    <RootNamespace>GoogleHashCode_StreetViewRouting</RootNamespace>
     <AssemblyName>GoogleHashCode02-2017</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,10 +51,12 @@
     <Compile Include="Entities\ProblemData.cs" />
     <Compile Include="Entities\Street.cs" />
     <Compile Include="Entities\Journey.cs" />
-    <Compile Include="EntryFileParser.cs" />
+    <Compile Include="Solving\EntryFileParser.cs" />
     <Compile Include="Extensions\List.cs" />
-    <Compile Include="JourneyPlanner.cs" />
-    <Compile Include="QueueElement.cs" />
+    <Compile Include="Solving\JourneyPlanner.cs" />
+    <Compile Include="Solving\OutputFileGenerator.cs" />
+    <Compile Include="Entities\JourneyStep.cs" />
+    <Compile Include="Solving\StreetViewRoutingSolver.cs" />
     <Compile Include="Tools\Parsing\FileCreator.cs" />
     <Compile Include="Tools\Parsing\Parser.cs" />
     <Compile Include="Program.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GoogleHashCode02_2017.Entities
+namespace GoogleHashCode_StreetViewRouting.Entities
 {
     public class ProblemData
     {

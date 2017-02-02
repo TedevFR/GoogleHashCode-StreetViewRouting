@@ -1,10 +1,10 @@
-﻿using GoogleHashCode02_2017.Entities;
-using GoogleHashCode02_2017.Extensions;
+﻿using GoogleHashCode_StreetViewRouting.Entities;
+using GoogleHashCode_StreetViewRouting.Extensions;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GoogleHashCode02_2017
+namespace GoogleHashCode_StreetViewRouting.Solving
 {
     public class JourneyPlanner
     {
@@ -63,8 +63,8 @@ namespace GoogleHashCode02_2017
 
         private Street GetNextStreet(Junction currentJunction, int elapsedSeconds)
         {
-            Queue<QueueElement> fifo = new Queue<QueueElement>();
-            fifo.Enqueue(new QueueElement {
+            Queue<JourneyStep> fifo = new Queue<JourneyStep>();
+            fifo.Enqueue(new JourneyStep {
                 ElapsedSeconds = elapsedSeconds,
                 Position = currentJunction,
                 StreetSteps = new List<Street>()
@@ -91,7 +91,7 @@ namespace GoogleHashCode02_2017
                     {
                         if (!alreadySeenJunctionId.Contains(street.ArrivalJunction.Id))
                         {
-                            fifo.Enqueue(new QueueElement
+                            fifo.Enqueue(new JourneyStep
                             {
                                 ElapsedSeconds = elapsedSeconds + street.CrossingTime,
                                 Position = street.ArrivalJunction,

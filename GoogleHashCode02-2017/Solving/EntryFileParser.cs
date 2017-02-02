@@ -2,7 +2,7 @@
 using System.Linq;
 using Tools.Parsing;
 
-namespace GoogleHashCode_StreetViewRouting
+namespace GoogleHashCode_StreetViewRouting.Solving
 {
     public class EntryFileParser
     {

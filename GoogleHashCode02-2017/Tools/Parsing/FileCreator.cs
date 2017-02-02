@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace GoogleHashCode02_2017.Tools.Parsing
+namespace Tools.Parsing
 {
     public class FileCreator : IDisposable
     {
@@ -15,6 +15,11 @@ namespace GoogleHashCode02_2017.Tools.Parsing
         public void WriteLine(string line)
         {
             FileWriter.WriteLine(line);
+        }
+
+        public void WriteLine(int i)
+        {
+            FileWriter.WriteLine(i);
         }
 
         public void Dispose()

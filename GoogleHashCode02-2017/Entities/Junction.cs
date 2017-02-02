@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GoogleHashCode02_2017.Entities
+namespace GoogleHashCode_StreetViewRouting.Entities
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Junction
